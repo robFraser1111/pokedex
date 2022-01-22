@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from "react";
+import Error from "./Error";
+import Pokeball from "../images/poke-ball-04.png";
 import { useParams } from "react-router-dom";
 
 type Item = typeof initItem;
 const initItem = {
-    sprites: {
-        front_default: "",
-        back_default: "",
-    },
     name: "",
+    id: "",
     height: "",
     weight: "",
+    sprites: {
+        front_default: "",
+        other: {
+            ["official-artwork"]: {
+                front_default: Pokeball,
+            },
+        },
+    },
+    types: [
+        {
+            type: {
+                name: "",
+            },
+        },
+    ],
 };
 
 const Pokemon = () => {
     const [pokemon, setPokemon] = useState<Item>(initItem);
+    const [loadingError, setLoadingError] = useState(false);
     const { name } = useParams();
 
     useEffect(() => {
@@ -24,7 +39,7 @@ const Pokemon = () => {
             .then((output) => setPokemon(output))
             .catch((error) => {
                 console.error("Fetching error: " + error);
-                setPokemon(initItem);
+                setLoadingError(true);
             });
         // Specify how to clean up after this effect:
         return function cleanup() {
@@ -32,14 +47,26 @@ const Pokemon = () => {
         };
     }, []);
 
-    return (
-        <div>
-            <img src={pokemon?.sprites.back_default} alt={pokemon.name} />
-            <p>Name = {pokemon?.name}</p>
-            <p>Height = {pokemon?.height}</p>
-            <p>Weight = {pokemon?.weight}</p>
-        </div>
-    );
+    if (!loadingError) {
+        return (
+            <div>
+                <img src={pokemon?.sprites.other["official-artwork"].front_default} alt={pokemon?.name} />
+                <p>Name = {pokemon?.name}</p>
+                <p>Height = {pokemon?.height}</p>
+                <p>Weight = {pokemon?.weight}</p>
+            </div>
+        );
+    } else {
+        return (
+            <Error
+                message={`Error loading ${
+                    name
+                        ? name.charAt(0).toUpperCase() + name.slice(1)
+                        : "Pokemon"
+                }. Try refreshing the page.`}
+            />
+        );
+    }
 };
 
 export default Pokemon;

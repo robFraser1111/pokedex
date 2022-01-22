@@ -6,10 +6,10 @@ import Message from "./components/Message";
 import Search from "./components/Search";
 import Card from "./components/Card";
 import Pokemon from "./components/Pokemon";
+import Error from "./components/Error";
 import Footer from "./components/Footer";
 import styled, { ThemeProvider } from "styled-components";
 import TopButton from "./components/TopButton";
-import Psyduck from "./images/psyduck-01.png";
 
 const theme = {
     // Base colours
@@ -43,6 +43,9 @@ const theme = {
 
 const Wrapper = styled.div`
     display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 77px;
+    height: 100vh;
     justify-content: center;
     background: ${theme.white};
 `;
@@ -73,20 +76,13 @@ const SearchResults = styled.div`
     }
 `;
 
-const Error = styled.section`
-    text-align: center;
-
-    img {
-        width: 300px;
-        height: auto;
-        padding: 20px;
-    }
-`;
-
 function App() {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`;
+    const [url, setUrl] = useState(
+        `https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`
+    );
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [loadingError, setLoadingError] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [scrollPos, setScrollPos] = useState(0);
@@ -104,11 +100,15 @@ function App() {
             .then((output) => setData(output.results))
             .catch((error) => {
                 console.error("Fetching error: " + error);
-                setData([]);
+                setLoadingError(true);
             })
             .finally(() => {
                 setLoading(false);
             });
+        // Specify how to clean up after this effect:
+        return function cleanup() {
+            setData([]);
+        };
     }, [url]);
 
     // Handle search input
@@ -144,8 +144,9 @@ function App() {
     let lastKnownScrollPosition = 0;
     let ticking = false;
 
-    function doSomething(scrollPos: any) {
+    function doSomething(scrollPos: number) {
         setScrollPos(scrollPos);
+        console.log(scrollPos);
     }
 
     document.addEventListener("scroll", function (e) {
@@ -160,6 +161,7 @@ function App() {
             ticking = true;
         }
 
+        // Set true if use has reached bottom of page
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
             setBottom(true);
         } else {
@@ -167,19 +169,26 @@ function App() {
         }
     });
 
-    if (data.length >= 0) {
+    if (!loadingError) {
         return (
             <ThemeProvider theme={theme}>
                 <Wrapper>
                     <Header />
-                    {loading && <Message text="Loading..." />}
                     <Main>
                         <Routes>
                             <Route
                                 path="/"
                                 element={
                                     <>
-                                        <Search handleSearch={handleSearch} />
+                                        {loading && (
+                                            <Message text="Loading..." />
+                                        )}
+                                        {!loading && (
+                                            <Search
+                                                handleSearch={handleSearch}
+                                            />
+                                        )}
+
                                         {searching && (
                                             <Message text="Searching..." />
                                         )}
@@ -224,21 +233,19 @@ function App() {
                         </Routes>
                         <TopButton pos={scrollPos} bottom={bottom} />
                     </Main>
-
                     <Footer />
                 </Wrapper>
             </ThemeProvider>
         );
     } else {
         return (
-            <>
-                <Header />
-                <Error>
-                    <h3>Error loading Pokemon. Try refreshing the page.</h3>
-                    <img src={Psyduck} alt="Error" />
-                </Error>
-                <Footer />
-            </>
+            <ThemeProvider theme={theme}>
+                <Wrapper>
+                    <Header />
+                    <Error message="Error loading Pokemon. Try refreshing the page."/>
+                    <Footer />
+                </Wrapper>
+            </ThemeProvider>
         );
     }
 }

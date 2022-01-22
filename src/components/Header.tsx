@@ -7,6 +7,10 @@ const Wrapper = styled.header`
     padding: 40px;
     display: flex;
     justify-content: center;
+
+    a {
+        height: fit-content;
+    }
 `;
 
 const Logo = styled.img`

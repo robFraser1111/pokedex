@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Pokeball from '../images/poke-ball-03.png'
+import Pokeball from "../images/poke-ball-04.png";
 
 const Div = styled.div`
     width: 290px;
@@ -24,8 +24,6 @@ const Div = styled.div`
         top: -4px;
         cursor: pointer;
     }
-
-    
 `;
 
 const Name = styled.h3`
@@ -139,6 +137,7 @@ const Card = (props: IProps) => {
     const [pokemon, setPokemon] = useState<Item>(initItem);
 
     useEffect(() => {
+
         fetch(`${props.data}`, {
             method: "GET",
         })
@@ -155,21 +154,21 @@ const Card = (props: IProps) => {
     }, [props.data]);
 
     return (
-        <Link to={pokemon.name}>
+        <Link to={pokemon?.name}>
             <Div>
                 <Name>
-                    {pokemon.name.charAt(0).toUpperCase() +
-                        pokemon.name.slice(1)}
+                    {pokemon?.name.charAt(0).toUpperCase() +
+                        pokemon?.name.slice(1)}
                 </Name>
                 <Img
                     src={
-                        pokemon.sprites.other["official-artwork"].front_default
+                        pokemon?.sprites.other["official-artwork"].front_default
                     }
-                    alt={pokemon.name + " front"}
+                    alt={pokemon?.name + " front"}
                 />
 
                 <Types>
-                    {pokemon.types.map((item, index) => (
+                    {pokemon?.types.map((item, index) => (
                         <Type key={index} className={item.type.name}>
                             <p>{item.type.name}</p>
                         </Type>
@@ -177,7 +176,7 @@ const Card = (props: IProps) => {
                 </Types>
 
                 <Number>
-                    <small># {pokemon.id}</small>
+                    <small># {pokemon?.id}</small>
                 </Number>
             </Div>
         </Link>
