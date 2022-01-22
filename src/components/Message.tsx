@@ -5,7 +5,7 @@ const Text = styled.p`
     text-align: center;
 `;
 
-const Message = (props) => {
+const Message = (props: {text: string}) => {
     return <Text>{props.text}</Text>;
 };
 
