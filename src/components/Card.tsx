@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Pokeball from '../images/poke-ball-03.png'
 
 const Div = styled.div`
     width: 290px;
     height: 280px;
     text-align: center;
     padding: 20px;
-    margin: 20px;
     color: ${(props) => props.theme.black};
     background: ${(props) => props.theme.grey};
     border-radius: 10px;
@@ -24,9 +24,11 @@ const Div = styled.div`
         top: -4px;
         cursor: pointer;
     }
+
+    
 `;
 
-const Name = styled.h2`
+const Name = styled.h3`
     padding-bottom: 10px;
 `;
 
@@ -116,7 +118,7 @@ const initItem = {
         front_default: "",
         other: {
             ["official-artwork"]: {
-                front_default: "",
+                front_default: Pokeball,
             },
         },
     },

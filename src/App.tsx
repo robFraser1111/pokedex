@@ -9,6 +9,7 @@ import Pokemon from "./components/Pokemon";
 import Footer from "./components/Footer";
 import styled, { ThemeProvider } from "styled-components";
 import TopButton from "./components/TopButton";
+import Psyduck from "./images/psyduck-01.png";
 
 const theme = {
     // Base colours
@@ -16,6 +17,7 @@ const theme = {
     yellow: "#ffcc00",
     black: "#313131",
     grey: "#f8f8f8",
+    darkGrey: "#e1e1e1",
     white: "#fefefe",
 
     // Types
@@ -51,10 +53,34 @@ const Cards = styled.section`
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
+    gap: 40px;
+    margin: 40px;
 `;
 
 const Main = styled.main`
     max-width: 2560px;
+`;
+
+const SearchResults = styled.div`
+    background-color: ${theme.darkGrey};
+    padding: 20px 0;
+    margin: 20px 0;
+    color: ${theme.black};
+
+    h2 {
+        text-align: center;
+        margin-top: 20px;
+    }
+`;
+
+const Error = styled.section`
+    text-align: center;
+
+    img {
+        width: 300px;
+        height: auto;
+        padding: 20px;
+    }
 `;
 
 function App() {
@@ -134,14 +160,14 @@ function App() {
             ticking = true;
         }
 
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
             setBottom(true);
         } else {
             setBottom(false);
         }
     });
 
-    if (data.length >= 2) {
+    if (data.length >= 0) {
         return (
             <ThemeProvider theme={theme}>
                 <Wrapper>
@@ -163,16 +189,26 @@ function App() {
                                         ) : (
                                             ""
                                         )}
-                                        <Cards>
-                                            {filteredData.map(
-                                                (pokemon, index) => (
-                                                    <Card
-                                                        key={index}
-                                                        data={pokemon["url"]}
-                                                    />
-                                                )
-                                            )}
-                                        </Cards>
+
+                                        {filteredData.length !== 0 && (
+                                            <SearchResults>
+                                                <h2>Search results:</h2>
+                                                <Cards>
+                                                    {filteredData.map(
+                                                        (pokemon, index) => (
+                                                            <Card
+                                                                key={index}
+                                                                data={
+                                                                    pokemon[
+                                                                        "url"
+                                                                    ]
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
+                                                </Cards>
+                                            </SearchResults>
+                                        )}
                                         <Cards>
                                             {data.map((pokemon, index) => (
                                                 <Card
@@ -194,7 +230,16 @@ function App() {
             </ThemeProvider>
         );
     } else {
-        return <p>Error loading Pokemon. Try refreshing the page.</p>;
+        return (
+            <>
+                <Header />
+                <Error>
+                    <h3>Error loading Pokemon. Try refreshing the page.</h3>
+                    <img src={Psyduck} alt="Error" />
+                </Error>
+                <Footer />
+            </>
+        );
     }
 }
 

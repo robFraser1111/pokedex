@@ -5,8 +5,12 @@ const Text = styled.p`
     text-align: center;
 `;
 
-const Message = (props: {text: string}) => {
-    return <Text>{props.text}</Text>;
+const Message = (props: { text: string }) => {
+    return (
+        <>
+            <Text>{props.text}</Text>
+        </>
+    );
 };
 
 export default Message;
