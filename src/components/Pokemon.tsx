@@ -1,14 +1,75 @@
 import React, { useState, useEffect } from "react";
-import Error from "./Error";
-import Pokeball from "../images/poke-ball-04.png";
 import { useParams } from "react-router-dom";
+import Error from "./Error";
+import styled from "styled-components";
+import Pokeball from "../images/poke-ball-04.png";
+
+const PokemonStats = styled.section`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    margin: 0 auto;
+    padding-bottom: 40px;
+    max-width: 1200px;
+
+    img {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+    }
+
+    @media (max-width: 728px) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+
+        img {
+            max-width: 300px;
+        }
+    }
+`;
+
+const Image = styled.div`
+    padding: 20px;
+`;
+
+const Stats = styled.div`
+    padding: 20px;
+    margin-left: 40px;
+
+    h1 {
+        font-size: 36px;
+    }
+`;
+
+const Heading = styled.h4`
+    margin-top: 20px;
+`;
+
+const List = styled.ul`
+    list-style: none;
+`;
 
 type Item = typeof initItem;
 const initItem = {
-    name: "",
     id: "",
+    name: "",
     height: "",
     weight: "",
+    abilities: [
+        {
+            ability: {
+                name: "",
+            },
+        },
+    ],
+    stats: [
+        {
+            base_stat: 0,
+            stat: {
+                name: "",
+            },
+        },
+    ],
     sprites: {
         front_default: "",
         other: {
@@ -49,12 +110,46 @@ const Pokemon = () => {
 
     if (!loadingError) {
         return (
-            <div>
-                <img src={pokemon?.sprites.other["official-artwork"].front_default} alt={pokemon?.name} />
-                <p>Name = {pokemon?.name}</p>
-                <p>Height = {pokemon?.height}</p>
-                <p>Weight = {pokemon?.weight}</p>
-            </div>
+            <PokemonStats>
+                <Image>
+                    <img
+                        src={
+                            pokemon?.sprites.other["official-artwork"]
+                                .front_default
+                        }
+                        alt={pokemon?.name}
+                    />
+                </Image>
+                <Stats>
+                    <h1>
+                        {pokemon?.name.charAt(0).toUpperCase() +
+                            pokemon.name.slice(1)}
+                    </h1>
+                    <p>#{pokemon?.id}</p>
+
+                    <Heading>
+                        Height: {pokemon?.height}
+                        <br />
+                        Weight: {pokemon?.weight}
+                    </Heading>
+
+                    <Heading>Abilities:</Heading>
+                    <List>
+                        {pokemon?.abilities.map((item, index) => (
+                            <li key={index}>{item.ability.name}</li>
+                        ))}
+                    </List>
+
+                    <Heading>Stats</Heading>
+                    <List>
+                        {pokemon?.stats.map((item, index) => (
+                            <li key={index}>
+                                {item.stat.name}: {item.base_stat}
+                            </li>
+                        ))}
+                    </List>
+                </Stats>
+            </PokemonStats>
         );
     } else {
         return (

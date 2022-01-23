@@ -21,7 +21,7 @@ const Img = styled.svg`
     transition: 0.2s;
 
     path {
-        fill: ${(props) => props.theme.blue};
+        fill: ${(props) => props.theme.yellow};
         transition: 0.2s;
     }
 
@@ -37,7 +37,6 @@ const Img = styled.svg`
 
 interface IProps {
     pos: number;
-    bottom: boolean;
 }
 
 const TopButton = (props: IProps) => {
@@ -48,7 +47,7 @@ const TopButton = (props: IProps) => {
                 focusable="false"
                 data-prefix="fas"
                 data-icon="chevron-circle-up"
-                className={props.bottom ? "bottom" : ""}
+                className={""}
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"

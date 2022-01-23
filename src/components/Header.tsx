@@ -4,7 +4,7 @@ import PokemonLogo from "../images/pokemon-logo-01.png";
 import styled from "styled-components";
 
 const Wrapper = styled.header`
-    padding: 40px;
+    padding: 20px;
     display: flex;
     justify-content: center;
 
@@ -25,6 +25,10 @@ const Logo = styled.img`
     &:focus {
         top: -4px;
         opacity: 0.9;
+    }
+
+    @media (max-width: 728px) {
+        max-width: 200px;
     }
 `;
 

@@ -58,6 +58,10 @@ const Cards = styled.section`
     justify-content: center;
     gap: 40px;
     margin: 40px;
+
+    @media (max-width: 728px) {
+        margin: 40px 0;
+    }
 `;
 
 const Main = styled.main`
@@ -86,7 +90,6 @@ function App() {
 
     const [loading, setLoading] = useState(true);
     const [scrollPos, setScrollPos] = useState(0);
-    const [bottom, setBottom] = useState(false);
 
     const [searching, setSearching] = useState(false);
     const [searchError, setSearchError] = useState(false);
@@ -146,7 +149,6 @@ function App() {
 
     function doSomething(scrollPos: number) {
         setScrollPos(scrollPos);
-        console.log(scrollPos);
     }
 
     document.addEventListener("scroll", function (e) {
@@ -159,13 +161,6 @@ function App() {
             });
 
             ticking = true;
-        }
-
-        // Set true if use has reached bottom of page
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            setBottom(true);
-        } else {
-            setBottom(false);
         }
     });
 
@@ -231,7 +226,7 @@ function App() {
                             ></Route>
                             <Route path="/:name" element={<Pokemon />} />
                         </Routes>
-                        <TopButton pos={scrollPos} bottom={bottom} />
+                        <TopButton pos={scrollPos} />
                     </Main>
                     <Footer />
                 </Wrapper>
@@ -242,7 +237,7 @@ function App() {
             <ThemeProvider theme={theme}>
                 <Wrapper>
                     <Header />
-                    <Error message="Error loading Pokemon. Try refreshing the page."/>
+                    <Error message="Error loading Pokemon. Try refreshing the page." />
                     <Footer />
                 </Wrapper>
             </ThemeProvider>
