@@ -34,7 +34,7 @@ const Image = styled.div`
 
 const Stats = styled.div`
     padding: 20px;
-    margin-left: 40px;
+    margin-left: 20px;
 
     h1 {
         font-size: 36px;
@@ -43,11 +43,55 @@ const Stats = styled.div`
 
 const Heading = styled.h4`
     margin-top: 20px;
+    font-size: 18px;
 `;
 
-const List = styled.ul`
+const AbilityList = styled.ul`
     list-style: none;
+
+    li {
+        display: inline;
+    }
 `;
+
+const Table = styled.table`
+    text-align: center;
+    margin: 20px 0;
+
+    td {
+        width: 40px;
+        padding: 0 10px 0 0;
+    }
+
+    @media (max-width: 728px) {
+        td {
+            width: 20px;
+            padding: 0 3px 0 0;
+        }
+    }
+`;
+
+const StatAmount = styled.tr``;
+
+const BarOuter = styled.div`
+    width: 30px;
+    height: 100px;
+    margin: 0 auto;
+    display: block;
+    background: ${(props) => props.theme.grey};
+    position: relative;
+`;
+
+const BarInner = styled.div`
+    width: 30px;
+    max-height: 100px;
+    color: ${(props) => props.theme.white};
+    background: ${(props) => props.theme.blue};
+    position: absolute;
+    bottom: 0;
+`;
+
+const StatName = styled.tr``;
 
 type Item = typeof initItem;
 const initItem = {
@@ -106,7 +150,7 @@ const Pokemon = () => {
         return function cleanup() {
             setPokemon(initItem);
         };
-    }, []);
+    }, [name]);
 
     if (!loadingError) {
         return (
@@ -134,20 +178,48 @@ const Pokemon = () => {
                     </Heading>
 
                     <Heading>Abilities:</Heading>
-                    <List>
+                    <AbilityList>
                         {pokemon?.abilities.map((item, index) => (
-                            <li key={index}>{item.ability.name}</li>
-                        ))}
-                    </List>
-
-                    <Heading>Stats</Heading>
-                    <List>
-                        {pokemon?.stats.map((item, index) => (
                             <li key={index}>
-                                {item.stat.name}: {item.base_stat}
+                                {item?.ability.name.charAt(0).toUpperCase() +
+                                    item.ability.name.slice(1)}{" "}
                             </li>
                         ))}
-                    </List>
+                    </AbilityList>
+
+                    <Heading>Stats:</Heading>
+
+                    <Table>
+                        <tbody>
+                            <StatAmount>
+                                {pokemon?.stats.map((item, index) => (
+                                    <td key={index}>
+                                        <BarOuter>
+                                            <BarInner
+                                                style={{
+                                                    height: item?.base_stat,
+                                                }}
+                                            >
+                                                <small>{item?.base_stat}</small>
+                                            </BarInner>
+                                        </BarOuter>
+                                    </td>
+                                ))}
+                            </StatAmount>
+                            <StatName>
+                                {pokemon?.stats.map((item, index) => (
+                                    <td key={index}>
+                                        <small>
+                                            {item?.stat.name
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                                item?.stat.name.slice(1)}
+                                        </small>
+                                    </td>
+                                ))}
+                            </StatName>
+                        </tbody>
+                    </Table>
                 </Stats>
             </PokemonStats>
         );
