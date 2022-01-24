@@ -80,12 +80,20 @@ const SearchResults = styled.div`
     }
 `;
 
+type Item = typeof initItem;
+const initItem = [
+    {
+        name: "None",
+        url: "",
+    },
+];
+
 function App() {
     const [url, setUrl] = useState(
         `https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`
     );
-    const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
+    const [data, setData] = useState<Item>(initItem);
+    const [filteredData, setFilteredData] = useState<Item>(initItem);
     const [loadingError, setLoadingError] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -96,6 +104,11 @@ function App() {
 
     // Load data from Poke API
     useEffect(() => {
+        // Try to stop re-fetching data when returning to home page
+        if (data[1]) {
+            return;
+        }
+
         fetch(url, {
             method: "GET",
         })
@@ -129,7 +142,7 @@ function App() {
 
             // Reset filtered data if there's no search term
             if (e.target.value === "") {
-                setFilteredData([]);
+                setFilteredData(initItem);
             }
 
             // Error checking
@@ -194,7 +207,7 @@ function App() {
                                             ""
                                         )}
 
-                                        {filteredData.length !== 0 && (
+                                        {filteredData[0].name !== "None" && (
                                             <SearchResults>
                                                 <h2>Search results:</h2>
                                                 <Cards>
@@ -213,14 +226,17 @@ function App() {
                                                 </Cards>
                                             </SearchResults>
                                         )}
-                                        <Cards>
-                                            {data.map((pokemon, index) => (
-                                                <Card
-                                                    key={index}
-                                                    data={pokemon["url"]}
-                                                />
-                                            ))}
-                                        </Cards>
+
+                                        {data[0].name !== "None" && (
+                                            <Cards>
+                                                {data.map((pokemon, index) => (
+                                                    <Card
+                                                        key={index}
+                                                        data={pokemon["url"]}
+                                                    />
+                                                ))}
+                                            </Cards>
+                                        )}
                                     </>
                                 }
                             ></Route>
