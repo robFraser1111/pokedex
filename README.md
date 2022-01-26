@@ -2,7 +2,7 @@
 
 Pokedex utilizing the Poke API @ https://pokeapi.co/
 
-Live version can be found @
+Live version can be found @ https://nostalgic-lamport-3be40a.netlify.app/
 
 ## Installation
 
