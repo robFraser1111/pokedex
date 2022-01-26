@@ -66,6 +66,7 @@ const Cards = styled.section`
 
 const Main = styled.main`
     max-width: 2560px;
+    margin: 0 auto;
 `;
 
 const SearchResults = styled.div`
