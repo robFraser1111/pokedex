@@ -123,7 +123,7 @@ function App() {
             });
         // Specify how to clean up after this effect:
         return function cleanup() {
-            setData([]);
+            setData(initItem);
         };
     }, [url]);
 
@@ -137,8 +137,12 @@ function App() {
                 item.name.includes(e.target.value.toLowerCase())
             );
 
-            // Set filtered data to new array
-            setFilteredData(newData);
+            // Set filtered data to new array if search result contains any pokemon
+            if (newData.length > 0) {
+                setFilteredData(newData);
+            } else {
+                setFilteredData(initItem);
+            }
 
             // Reset filtered data if there's no search term
             if (e.target.value === "") {
@@ -207,7 +211,7 @@ function App() {
                                             ""
                                         )}
 
-                                        {filteredData[0].name !== "None" && (
+                                        {filteredData[0]?.name !== "None" && (
                                             <SearchResults>
                                                 <h2>Search results:</h2>
                                                 <Cards>
@@ -227,7 +231,7 @@ function App() {
                                             </SearchResults>
                                         )}
 
-                                        {data[0].name !== "None" && (
+                                        {data[0]?.name !== "None" && (
                                             <Cards>
                                                 {data.map((pokemon, index) => (
                                                     <Card

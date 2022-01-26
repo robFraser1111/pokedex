@@ -14,7 +14,7 @@ const PokemonStats = styled.section`
 
     img {
         width: 100%;
-        max-width: 600px;
+        max-width: 465px;
         height: auto;
     }
 
@@ -41,6 +41,10 @@ const Stats = styled.div`
     }
 `;
 
+const Physical = styled.span`
+    font-weight: 500;
+`;
+
 const Heading = styled.h4`
     margin-top: 20px;
     font-size: 18px;
@@ -48,10 +52,6 @@ const Heading = styled.h4`
 
 const AbilityList = styled.ul`
     list-style: none;
-
-    li {
-        display: inline;
-    }
 `;
 
 const Table = styled.table`
@@ -171,11 +171,11 @@ const Pokemon = () => {
                     </h1>
                     <p>#{pokemon?.id}</p>
 
-                    <Heading>
-                        Height: {pokemon?.height}
+                    <Heading >
+                        Height: <Physical>{pokemon?.height}</Physical>
                         <br />
-                        Weight: {pokemon?.weight}
-                    </Heading>
+                        Weight: <Physical>{pokemon?.weight}</Physical>
+                    </Heading >
 
                     <Heading>Abilities:</Heading>
                     <AbilityList>
