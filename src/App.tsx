@@ -102,10 +102,6 @@ function App() {
 
     // Load data from Poke API
     useEffect(() => {
-        // Try to stop re-fetching data when returning to home page
-        if (data[1]) {
-            return;
-        }
 
         fetch(url, {
             method: "GET",
