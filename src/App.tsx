@@ -89,9 +89,7 @@ const initItem = [
 ];
 
 function App() {
-    const [url, setUrl] = useState(
-        `https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`
-    );
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`;
     const [data, setData] = useState<Item>(initItem);
     const [filteredData, setFilteredData] = useState<Item>(initItem);
     const [loadingError, setLoadingError] = useState(false);
