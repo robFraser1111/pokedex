@@ -83,12 +83,14 @@ const BarOuter = styled.div`
 `;
 
 const BarInner = styled.div`
+    height: 0px;
     width: 30px;
     max-height: 100px;
     color: ${(props) => props.theme.white};
     background: ${(props) => props.theme.blue};
     position: absolute;
     bottom: 0;
+    transition: 0.4s;
 `;
 
 const StatName = styled.tr``;
@@ -164,62 +166,72 @@ const Pokemon = () => {
                         alt={pokemon?.name}
                     />
                 </Image>
+
                 <Stats>
-                    <h1>
-                        {pokemon?.name.charAt(0).toUpperCase() +
-                            pokemon.name.slice(1)}
-                    </h1>
-                    <p>#{pokemon?.id}</p>
+                    {pokemon.id ? (
+                        <>
+                            <h1>
+                                {pokemon?.name.charAt(0).toUpperCase() +
+                                    pokemon.name.slice(1)}
+                            </h1>
+                            <p>#{pokemon?.id}</p>
 
-                    <Heading >
-                        Height: <Physical>{pokemon?.height}</Physical>
-                        <br />
-                        Weight: <Physical>{pokemon?.weight}</Physical>
-                    </Heading >
+                            <Heading>
+                                Height: <Physical>{pokemon?.height}</Physical>
+                                <br />
+                                Weight: <Physical>{pokemon?.weight}</Physical>
+                            </Heading>
 
-                    <Heading>Abilities:</Heading>
-                    <AbilityList>
-                        {pokemon?.abilities.map((item, index) => (
-                            <li key={index}>
-                                {item?.ability.name.charAt(0).toUpperCase() +
-                                    item.ability.name.slice(1)}{" "}
-                            </li>
-                        ))}
-                    </AbilityList>
+                            <Heading>Abilities:</Heading>
+                            <AbilityList>
+                                {pokemon?.abilities.map((item, index) => (
+                                    <li key={index}>
+                                        {item?.ability.name
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                            item.ability.name.slice(1)}{" "}
+                                    </li>
+                                ))}
+                            </AbilityList>
 
-                    <Heading>Stats:</Heading>
+                            <Heading>Stats:</Heading>
 
-                    <Table>
-                        <tbody>
-                            <StatAmount>
-                                {pokemon?.stats.map((item, index) => (
-                                    <td key={index}>
-                                        <BarOuter>
-                                            <BarInner
-                                                style={{
-                                                    height: item?.base_stat,
-                                                }}
-                                            >
+                            <Table>
+                                <tbody>
+                                    <StatAmount>
+                                        {pokemon?.stats.map((item, index) => (
+                                            <td key={index}>
                                                 <small>{item?.base_stat}</small>
-                                            </BarInner>
-                                        </BarOuter>
-                                    </td>
-                                ))}
-                            </StatAmount>
-                            <StatName>
-                                {pokemon?.stats.map((item, index) => (
-                                    <td key={index}>
-                                        <small>
-                                            {item?.stat.name
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                                item?.stat.name.slice(1)}
-                                        </small>
-                                    </td>
-                                ))}
-                            </StatName>
-                        </tbody>
-                    </Table>
+                                                <BarOuter>
+                                                    <BarInner
+                                                        style={{
+                                                            height: item?.base_stat,
+                                                        }}
+                                                    />
+                                                </BarOuter>
+                                            </td>
+                                        ))}
+                                    </StatAmount>
+                                    <StatName>
+                                        {pokemon?.stats.map((item, index) => (
+                                            <td key={index}>
+                                                <small>
+                                                    {item?.stat.name
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        item?.stat.name.slice(
+                                                            1
+                                                        )}
+                                                </small>
+                                            </td>
+                                        ))}
+                                    </StatName>
+                                </tbody>
+                            </Table>
+                        </>
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </Stats>
             </PokemonStats>
         );
