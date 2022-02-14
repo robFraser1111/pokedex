@@ -1,8 +1,8 @@
 # Pokedex
 
-Pokedex utilizing the Poke API @ https://pokeapi.co/
+Pokedex utilizing the Poke API @ <a href="https://pokeapi.co/" target="_blank" />
 
-Live version can be found @ https://nostalgic-lamport-3be40a.netlify.app/
+Live version can be found @ <a href="https://nostalgic-lamport-3be40a.netlify.app/" target="_blank" />
 
 ## Installation
 
@@ -22,4 +22,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](<a href="https://choosealicense.com/licenses/mit/" target="_blank" />)
